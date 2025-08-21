@@ -1,0 +1,42 @@
+#include <stdio.h>
+#define INF 9999
+#define MAX 10
+void prim(int graph[MAX][MAX], int n) {
+    int visited[MAX] = {0};
+    int i, j, min, u = 0, v = 0, total = 0;
+    visited[0] = 1; // Start from node 0
+    printf("Edges in MST:\n");
+    for (int count = 0; count < n - 1; count++) {
+        min = INF;
+
+        for (i = 0; i < n; i++) {
+            if (visited[i]) {
+                for (j = 0; j < n; j++) {
+                    if (!visited[j] && graph[i][j] && graph[i][j] < min) {
+                        min = graph[i][j];
+                        u = i;
+                        v = j;
+                    }
+                }
+            }
+        }
+
+        visited[v] = 1;
+        total += min;
+        printf("%d -> %d = %d\n", u, v, min);
+    }
+    printf("Total cost of MST: %d\n", total);
+}
+int main() {
+    int graph[MAX][MAX] = {
+        {0, 2, 0, 6, 0},
+        {2, 0, 3, 8, 5},
+        {0, 3, 0, 0, 7},
+        {6, 8, 0, 0, 9},
+        {0, 5, 7, 9, 0}
+    };
+    int n = 5; // Number of vertices
+    prim(graph, n);
+
+    return 0;
+}
