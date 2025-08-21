@@ -1,0 +1,56 @@
+
+#include <stdio.h>
+#define INF 9999
+#define MAX 10
+
+void dijkstra(int graph[MAX][MAX], int n, int src) {
+    int dist[MAX], visited[MAX] = {0}, i, j, min, u;
+
+    // Initialize distances
+    for (i = 0; i < n; i++)
+        dist[i] = INF;
+    dist[src] = 0;
+
+    // Main loop
+    for (i = 0; i < n - 1; i++) {
+        min = INF;
+
+        // Find the unvisited node with the smallest distance
+        for (j = 0; j < n; j++)
+            if (!visited[j] && dist[j] <= min)
+                min = dist[j], u = j;
+
+        visited[u] = 1;
+
+        // Update the distances of adjacent nodes
+        for (j = 0; j < n; j++)
+            if (!visited[j] && graph[u][j] && dist[u] + graph[u][j] < dist[j])
+                dist[j] = dist[u] + graph[u][j];
+    }
+
+    // Print shortest distances
+    printf("Shortest distances from source node %d:\n", src);
+    for (i = 0; i < n; i++)
+        printf("%d -> %d = %d\n", src, i, dist[i]);
+}
+
+int main() {
+    int graph[MAX][MAX] = {
+        {0, 4, 0, 0, 0, 0, 0, 8, 0},
+        {4, 0, 8, 0, 0, 0, 0, 11, 0},
+        {0, 8, 0, 7, 0, 4, 0, 0, 2},
+        {0, 0, 7, 0, 9, 14, 0, 0, 0},
+        {0, 0, 0, 9, 0, 10, 0, 0, 0},
+        {0, 0, 4, 14, 10, 0, 2, 0, 0},
+        {0, 0, 0, 0, 0, 2, 0, 1, 6},
+        {8, 11, 0, 0, 0, 0, 1, 0, 7},
+        {0, 0, 2, 0, 0, 0, 6, 7, 0}
+    };
+
+    int n = 9; // Number of vertices
+    int src = 0; // Source vertex
+
+    dijkstra(graph, n, src);
+
+    return 0;
+}
